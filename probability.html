@@ -1,0 +1,943 @@
+# MASTER PROMPT — Discrete Probability Distributions: Complete Interactive AIML Laboratory in a Single HTML File
+
+## 1. Project Objective
+
+Create a complete, interactive educational web application for an undergraduate Artificial Intelligence and Machine Learning (AIML) laboratory.
+
+**Application Title: Discrete Probability Distributions**
+
+Develop a clean, responsive application that teaches students three discrete probability distributions through mathematical explanations, interactive input controls, statistical calculations, PMF and CDF calculators, dynamic graphs, parameter comparisons, and laboratory exercises.
+
+### All three modules must be fully functional
+
+1. Binomial Distribution
+2. Poisson Distribution
+3. Geometric Distribution
+
+**Mandatory final deliverable:** Provide exactly one complete HTML file named `index.html` containing the entire application, including HTML, CSS, and JavaScript.
+
+The application must:
+- Run by opening `index.html` directly in a modern web browser.
+- Require no installation, build process, backend server, database, or package manager.
+- Keep all application logic and styling inside the HTML file.
+- Use JavaScript for calculations, input validation, graph generation, and interactive behavior.
+- Prefer native HTML, CSS, SVG, and JavaScript for graphs and visualizations.
+- Avoid external dependencies where practical. If a charting library or other external resource is used, clearly account for its availability and explain any internet requirement.
+- Not require separate CSS, JavaScript, JSON, image, or configuration files.
+- Be fully implemented rather than a mockup or partially functional prototype.
+
+Do not provide only a code snippet, project structure, React project, or instructions for creating the file. The final output must be the actual downloadable `index.html` file.
+
+---
+
+## 2. Application Layout and Navigation
+
+Create a simple, modern, academic dashboard interface.
+
+The header must contain the application title and these navigation items:
+
+- Home
+- Binomial
+- Poisson
+- Geometric
+
+Navigation must work correctly without reloading the page unnecessarily.
+
+### Home page
+
+Include:
+- Title: Discrete Probability Distributions
+- A brief introduction to discrete random variables and probability distributions.
+- A concise description of each of the three distributions.
+- Three navigation cards or links that open their corresponding functional modules.
+- A short explanation that students can change parameters, calculate probabilities, and interpret the graphs.
+
+### Design requirements
+
+- Clean and readable interface.
+- Consistent colors, typography, spacing, and statistic cards.
+- Responsive design for desktop, tablet, and mobile screens.
+- Properly formatted mathematical formulas.
+- Clearly labeled input controls.
+- Helpful validation messages.
+- Accessible buttons and keyboard-friendly controls.
+- Readable charts with axis labels, legends, tooltips, and mean reference lines where required.
+- No unnecessary authentication, database, user profiles, or unrelated features.
+
+---
+
+# PART A — BINOMIAL DISTRIBUTION
+
+## 3. Binomial Overview and Inputs
+
+Display:
+
+\[
+X\sim\operatorname{Binomial}(n,p)
+\]
+
+Explain that the Binomial distribution models the number of successes in a fixed number of independent trials with the same probability of success.
+
+Provide these input controls:
+
+| Parameter | Default | Validation |
+|---|---:|---|
+| Number of trials, n | 20 | Positive integer |
+| Probability of success, p | 0.35 | Between 0 and 1, inclusive |
+
+Display the selected values of `n`, `p`, and `1-p`.
+
+Reject invalid values, including zero or negative `n`, non-integer `n`, and probabilities outside the allowed range.
+
+Handle `p = 0` and `p = 1` correctly.
+
+Use sensible computational limits on `n` to prevent unresponsive graphs or numerical failures.
+
+Update all dependent statistics, calculators, and graphs automatically whenever valid parameters change.
+
+## 4. Binomial Statistics
+
+Calculate and display each result in a separate statistic card.
+
+**Mean**
+
+\[
+E[X]=np
+\]
+
+**Variance**
+
+\[
+\operatorname{Var}(X)=np(1-p)
+\]
+
+**Standard deviation**
+
+\[
+\sigma=\sqrt{np(1-p)}
+\]
+
+**Second raw moment**
+
+\[
+E[X^2]=\operatorname{Var}(X)+(E[X])^2
+\]
+
+**Skewness**
+
+\[
+\gamma_1=\frac{1-2p}{\sqrt{np(1-p)}}
+\]
+
+Each card must show the statistic name, formula, and calculated value.
+
+When variance is zero, display skewness as undefined rather than dividing by zero.
+
+For the default values `n = 20`, `p = 0.35`, verify:
+
+- Mean = 7
+- Variance = 4.55
+- Standard deviation ≈ 2.1331
+- Second moment = 53.55
+- Skewness ≈ 0.1404
+
+Calculate these values dynamically instead of hardcoding them.
+
+## 5. Binomial PMF Calculator
+
+Provide an integer input for `k`, defaulting to a valid value.
+
+Display:
+
+\[
+P(X=k)=\binom{n}{k}p^k(1-p)^{n-k}
+\]
+
+Validate that `k` is an integer satisfying:
+
+\[
+0\leq k\leq n
+\]
+
+Display the selected parameters, `k`, the calculated probability, and optionally the equivalent percentage.
+
+Include the explanation:
+
+“The probability is the chance of obtaining exactly k successes in n independent trials.”
+
+Handle all valid boundary cases. Use a numerically reliable algorithm instead of directly calculating very large factorials.
+
+## 6. Binomial CDF Calculator
+
+Provide a separate integer input for the cumulative probability calculation.
+
+Calculate:
+
+\[
+P(X\leq k)=\sum_{i=0}^{k}P(X=i)
+\]
+
+and
+
+\[
+P(X>k)=1-P(X\leq k)
+\]
+
+Validate `k` within `0` to `n`.
+
+Display both probabilities and their mathematical expressions.
+
+Include this exact explanation:
+
+“P(X <= k) means the probability of getting k or fewer successes.”
+
+Update the results whenever the relevant parameters or `k` change.
+
+## 7. Binomial PMF Graph
+
+Create an interactive bar chart plotting:
+
+\[
+X=0,1,2,\ldots,n
+\]
+
+Chart requirements:
+- X-axis: Number of successes X
+- Y-axis: Probability P(X)
+- Plot the probability mass for every integer from 0 through `n`.
+- Update automatically when `n` or `p` changes.
+- Display tooltips with `X = value` and `P(X = value) = probability`.
+- Draw a vertical dashed reference line at the actual mean, \(\mu=np\).
+- Label the mean reference line.
+- Keep the chart readable and responsive.
+
+Use native SVG or Canvas if necessary to implement the graph and reference line without requiring an external charting dependency.
+
+---
+
+# PART B — POISSON DISTRIBUTION
+
+## 8. Poisson Overview and Inputs
+
+Display:
+
+\[
+X\sim\operatorname{Poisson}(\lambda)
+\]
+
+Explain that the Poisson distribution models the number of events occurring within a fixed interval when events occur independently at a constant average rate.
+
+Use the default parameter:
+
+\[
+\lambda=6
+\]
+
+Provide an input labeled **Average number of events (λ)**.
+
+Accept finite, non-negative values of `λ`, including zero. Reject negative or invalid values.
+
+Update all statistics, calculators, and the graph automatically.
+
+## 9. Poisson Statistics
+
+Display:
+
+**Mean**
+
+\[
+E[X]=\lambda
+\]
+
+**Variance**
+
+\[
+\operatorname{Var}(X)=\lambda
+\]
+
+**Standard deviation**
+
+\[
+\sigma=\sqrt{\lambda}
+\]
+
+For `λ = 6`, verify:
+- Mean = 6
+- Variance = 6
+- Standard deviation ≈ 2.4495
+
+Handle `λ = 0` correctly.
+
+## 10. Poisson PMF Calculator
+
+Allow the student to enter a non-negative integer `k`.
+
+Calculate:
+
+\[
+P(X=k)=\frac{e^{-\lambda}\lambda^k}{k!}
+\]
+
+Display the parameters, the selected `k`, the probability, and an optional percentage.
+
+Include the explanation:
+
+“The result is the probability of observing exactly k events during the specified interval.”
+
+Handle `λ = 0` and `k = 0` correctly.
+
+Use numerically reliable calculations for larger parameters and counts.
+
+## 11. Poisson CDF Calculator
+
+Allow a non-negative integer `k`.
+
+Calculate:
+
+\[
+P(X\leq k)=\sum_{i=0}^{k}
+\frac{e^{-\lambda}\lambda^i}{i!}
+\]
+
+and
+
+\[
+P(X>k)=1-P(X\leq k)
+\]
+
+Display both results and update them automatically.
+
+Include this explanation:
+
+“P(X <= k) means the probability of observing k or fewer events.”
+
+## 12. Poisson PMF Graph
+
+Create a responsive bar chart for the Poisson PMF.
+
+Requirements:
+- X-axis: Number of events X
+- Y-axis: Probability P(X)
+- Plot non-negative integer event counts.
+- Use the selected value of `λ`.
+- Show tooltips with the event count and its probability.
+- Automatically update the graph when `λ` changes.
+- Draw a vertical dashed reference line at the mean, \(\mu=\lambda\).
+- Label the mean line.
+- Choose a plotting range that captures nearly all probability mass for ordinary values of `λ`.
+- Clearly indicate that the displayed range is finite.
+
+Use the same probability calculations as the PMF calculator.
+
+## 13. Poisson Comparison Graphs
+
+Create a dedicated comparison section showing the three distributions:
+
+\[
+\lambda=2,\qquad\lambda=6,\qquad\lambda=10
+\]
+
+Display either three individual charts or a single overlaid chart with three distinguishable series.
+
+Requirements:
+- Label each parameter clearly.
+- Use a common X-axis range for fair comparison.
+- Display a legend and readable axis labels.
+- Provide tooltips or equivalent probability information.
+- Make the comparison independent of the selected value in the main Poisson calculator.
+- Update the comparison charts when the page loads, without external data.
+
+Include a concise interpretation explaining that increasing `λ` shifts the distribution toward higher event counts, increases the absolute spread, and makes the distribution relatively less right-skewed.
+
+---
+
+# PART C — GEOMETRIC DISTRIBUTION
+
+## 14. Geometric Overview
+
+Implement a fully functional Geometric Distribution module. Do not leave it as a placeholder.
+
+Display:
+
+\[
+X\sim\operatorname{Geometric}(p)
+\]
+
+Use the convention that **X counts the number of independent Bernoulli trials required to obtain the first success**.
+
+Therefore, the possible values are:
+
+\[
+X=1,2,3,\ldots
+\]
+
+Explain that the Geometric distribution models how many trials are needed until the first success, with a constant probability of success on each independent trial.
+
+Provide the default value:
+
+\[
+p=0.5
+\]
+
+Include a simple example, such as repeatedly testing an AI classifier until its first successful detection, with the same success probability on each independent attempt.
+
+## 15. Geometric Input Controls and Validation
+
+Provide one input control:
+
+- Label: Probability of success (p)
+- Default value: `0.5`
+- Accept values satisfying `0 < p <= 1`.
+- Reject `p <= 0`, values greater than 1, and invalid inputs.
+
+The probability must be strictly greater than zero because the number of trials until the first success is not finite with probability 1 when `p = 0`.
+
+Display the selected value of `p` clearly.
+
+Update all Geometric statistics, probability calculators, and the graph whenever `p` changes.
+
+## 16. Geometric Statistical Calculations
+
+Display the following statistics in individual cards.
+
+**Mean**
+
+\[
+E[X]=\frac{1}{p}
+\]
+
+**Variance**
+
+\[
+\operatorname{Var}(X)=\frac{1-p}{p^2}
+\]
+
+**Standard deviation**
+
+\[
+\sigma=\frac{\sqrt{1-p}}{p}
+\]
+
+**Second raw moment**
+
+\[
+E[X^2]=\operatorname{Var}(X)+(E[X])^2
+\]
+
+Equivalently:
+
+\[
+E[X^2]=\frac{2-p}{p^2}
+\]
+
+**Skewness**
+
+\[
+\gamma_1=\frac{2-p}{\sqrt{1-p}}
+\]
+
+The skewness formula applies for `0 < p < 1`. When `p = 1`, the distribution is concentrated entirely at one trial and has zero variance, so display skewness as undefined.
+
+For the default `p = 0.5`, verify:
+
+- Mean = 2
+- Variance = 2
+- Standard deviation ≈ 1.4142
+- Second moment = 6
+- Skewness ≈ 2.1213
+
+Calculate all results dynamically.
+
+## 17. Geometric PMF Calculator
+
+Provide an integer input `k`.
+
+Use the formula:
+
+\[
+P(X=k)=(1-p)^{k-1}p
+\]
+
+Validate that `k` is a positive integer:
+
+\[
+k\geq1
+\]
+
+Display:
+- Selected `p`
+- Selected `k`
+- Calculated `P(X = k)`
+- Mathematical formula
+- Decimal probability and optional percentage
+
+Include the explanation:
+
+“The probability is the chance that the first success occurs on exactly the kth trial.”
+
+Handle `p = 1` correctly:
+- `P(X = 1) = 1`
+- `P(X = k) = 0` for `k > 1`
+
+## 18. Geometric CDF Calculator
+
+Allow a positive integer `k`.
+
+Calculate the probability of achieving the first success within the first `k` trials:
+
+\[
+P(X\leq k)=1-(1-p)^k
+\]
+
+Also calculate:
+
+\[
+P(X>k)=(1-p)^k
+\]
+
+Display both results with mathematical expressions and clear labels.
+
+Include the explanation:
+
+“P(X <= k) is the probability that the first success occurs within the first k trials.”
+
+Validate that `k` is a positive integer and update the results automatically.
+
+Handle `p = 1` correctly.
+
+## 19. Geometric PMF Graph
+
+Create a dynamic bar chart of the Geometric PMF.
+
+Plot:
+
+\[
+P(X=k)=(1-p)^{k-1}p
+\]
+
+for positive integer trial counts.
+
+Requirements:
+- X-axis: Trial number until first success X
+- Y-axis: Probability P(X)
+- Use the selected probability `p`.
+- Update the graph automatically when `p` changes.
+- Provide tooltips showing the trial number and probability.
+- Use a suitable finite plotting range based on `p`, capturing most of the probability mass for ordinary parameter values.
+- Clearly state that the theoretical support continues indefinitely.
+- Ensure the chart remains responsive for small probabilities.
+
+Because the Geometric distribution has an infinite support, do not claim that a finite graph displays every possible value. Display a sensible range and, where practical, explain the remaining probability mass beyond the plotted range.
+
+For `p = 1`, show the probability mass concentrated at `X = 1`.
+
+## 20. Geometric Interpretation
+
+Add a short interpretation section explaining:
+- Higher values of `p` make the first success more likely to occur earlier.
+- Lower values of `p` generally increase the expected waiting time.
+- The distribution is right-skewed for `0 < p < 1`.
+- The mean is the expected number of trials until the first success.
+
+---
+
+# PART D — LABORATORY EXERCISES
+
+## 21. Exercise 1: Interactive Binomial Distribution UI
+
+Add a clearly labeled Exercise 1 section that uses the real Binomial module.
+
+Provide a button labeled **Load Exercise 1 Values**.
+
+When clicked, it must set:
+
+\[
+n=15,\qquad p=0.6
+\]
+
+Update all statistics, calculators, and graph data automatically.
+
+### Question 1: Mean and variance
+
+Calculate:
+
+\[
+E[X]=np=9
+\]
+
+\[
+\operatorname{Var}(X)=np(1-p)=3.6
+\]
+
+Expected results:
+- Mean = 9
+- Variance = 3.6
+
+### Question 2: Probability of exactly nine successes
+
+Set or allow the student to enter `k = 9` in the PMF calculator.
+
+Calculate:
+
+\[
+P(X=9)=\binom{15}{9}(0.6)^9(0.4)^6
+\]
+
+Expected result:
+
+\[
+P(X=9)\approx0.2066
+\]
+
+### Question 3: Probability of at most ten successes
+
+Set or allow the student to enter `k = 10` in the CDF calculator.
+
+Calculate:
+
+\[
+P(X\leq10)
+\]
+
+Expected result:
+
+\[
+P(X\leq10)\approx0.7869
+\]
+
+### Question 4: Highest-probability region
+
+Ask students to observe the PMF graph and identify where the probability is highest.
+
+For `n = 15`, `p = 0.6`, the unique mode is:
+
+\[
+X=9
+\]
+
+Ensure the graph visibly supports this observation.
+
+### Question 5: Brief inference
+
+Provide an editable text area where students can write their own inference.
+
+Display this example inference:
+
+“For 15 independent trials with a success probability of 0.6, the expected number of successes is 9. The highest probability occurs at 9 successes, and the probabilities decrease toward the extreme outcomes.”
+
+---
+
+## 22. Exercise 2: Interactive Poisson Distribution UI
+
+Add a clearly labeled Exercise 2 section that uses the actual Poisson module.
+
+Provide a button labeled **Load Exercise 2 Values**.
+
+Set:
+
+\[
+\lambda=6
+\]
+
+Use the following context:
+
+“An AI-based monitoring system records events during a fixed observation interval. The average number of events during that interval is six.”
+
+### Question 1: Mean and variance
+
+Calculate:
+
+\[
+E[X]=\lambda=6
+\]
+
+\[
+\operatorname{Var}(X)=\lambda=6
+\]
+
+### Question 2: Probability of exactly eight events
+
+Calculate:
+
+\[
+P(X=8)=\frac{e^{-6}6^8}{8!}
+\]
+
+Expected result:
+
+\[
+P(X=8)\approx0.1033
+\]
+
+Use the Poisson PMF calculator with `k = 8`.
+
+### Question 3: Probability of at most five events
+
+Calculate:
+
+\[
+P(X\leq5)=\sum_{i=0}^{5}\frac{e^{-6}6^i}{i!}
+\]
+
+Expected result:
+
+\[
+P(X\leq5)\approx0.4457
+\]
+
+Use the Poisson CDF calculator with `k = 5`.
+
+### Question 4: Compare λ = 2, 6, and 10
+
+Direct students to the Poisson comparison graphs.
+
+Ask them to observe changes in:
+- Peak position
+- Distribution center
+- Absolute spread
+- Probability mass across event counts
+
+### Question 5: Brief inference
+
+Provide an editable text area and this example inference:
+
+“As λ increases from 2 to 6 to 10, the distribution shifts toward larger event counts and its absolute spread increases. The distribution also becomes relatively less right-skewed.”
+
+---
+
+## 23. Exercise 3: Interactive Geometric Distribution UI
+
+Add a third exercise to demonstrate the newly implemented Geometric module.
+
+Use:
+
+\[
+p=0.5
+\]
+
+Provide a button labeled **Load Exercise 3 Values** that sets the Geometric calculator to `p = 0.5`.
+
+### Question 1: Mean and variance
+
+Calculate:
+
+\[
+E[X]=\frac{1}{0.5}=2
+\]
+
+\[
+\operatorname{Var}(X)=\frac{1-0.5}{(0.5)^2}=2
+\]
+
+### Question 2: Probability that the first success occurs on the third trial
+
+Use `k = 3`:
+
+\[
+P(X=3)=(1-0.5)^2(0.5)
+\]
+
+Expected result:
+
+\[
+P(X=3)=0.125
+\]
+
+### Question 3: Probability that the first success occurs within the first three trials
+
+Calculate:
+
+\[
+P(X\leq3)=1-(1-0.5)^3
+\]
+
+Expected result:
+
+\[
+P(X\leq3)=0.875
+\]
+
+### Question 4: Observe the Geometric PMF graph
+
+Ask students to identify how the probabilities change as the trial number increases.
+
+For `p = 0.5`, the probability is highest at the first trial and decreases for subsequent trials.
+
+### Question 5: Brief inference
+
+Provide an editable response area and this example inference:
+
+“When the success probability is 0.5 on every independent trial, the first trial has the highest probability of success. The probability that the first success occurs on a later trial decreases geometrically, and the expected waiting time is two trials.”
+
+All results must be calculated using the actual Geometric module.
+
+---
+
+# PART E — SHARED FUNCTIONAL REQUIREMENTS
+
+## 24. Automatic Updates and State Management
+
+All modules must use their current input values consistently.
+
+### Binomial
+
+Changing `n` or `p` updates:
+- All statistics
+- PMF result
+- CDF result and complementary probability
+- Graph bars and tooltips
+- Mean reference line
+
+Changing `k` updates the relevant probability calculation.
+
+### Poisson
+
+Changing `λ` updates:
+- All statistics
+- PMF result
+- CDF result and complementary probability
+- Main graph and mean reference line
+
+Changing `k` updates the relevant probability calculation.
+
+The comparison charts for λ = 2, 6, and 10 must remain independent of the main calculator's selected parameter.
+
+### Geometric
+
+Changing `p` updates:
+- All statistics
+- PMF result
+- CDF result and complementary probability
+- Graph bars and tooltips
+
+Changing `k` updates the relevant probability calculation.
+
+### Exercise loading
+
+Each exercise button must update the corresponding live calculator. Do not create separate hardcoded calculators or static results pages for the exercises.
+
+The three modules must not overwrite each other's input values.
+
+## 25. Numerical Reliability
+
+Implement all probability calculations dynamically.
+
+Use stable methods for combinations, factorial-related probabilities, and cumulative probabilities where appropriate.
+
+Ensure:
+- Probabilities remain within the valid range from 0 to 1, subject to floating-point precision.
+- CDF values are non-decreasing with increasing `k`.
+- `P(X ≤ k) + P(X > k) = 1` within numerical tolerance.
+- The Binomial PMF sums to approximately 1 over its support.
+- The Poisson PMF approaches 1 when summed over a sufficiently large range.
+- The Geometric PMF approaches 1 over its infinite support as the plotting range increases.
+- No invalid input causes `NaN`, unexpected infinity, a broken chart, or an uncaught error.
+- Undefined statistics are labeled clearly rather than represented as misleading numerical values.
+
+## 26. Single-File HTML Implementation
+
+This requirement is mandatory.
+
+Produce one file named:
+
+`index.html`
+
+The file must contain:
+
+1. HTML structure for all pages and modules.
+2. CSS styles inside a `<style>` element.
+3. JavaScript calculations and interactions inside `<script>` elements.
+4. All probability functions.
+5. All input validation.
+6. All dynamic graph generation.
+7. All navigation logic.
+8. All three laboratory exercises.
+9. All mathematical explanations and formulas.
+10. Responsive layout and error handling.
+
+Use native SVG or Canvas for charts when practical, so the graphs work without an external charting library.
+
+Do not split the application into separate files.
+
+Do not require npm, Node.js, React setup, a development server, a build command, or any installation steps.
+
+Ensure that opening the HTML file directly in Chrome, Edge, Firefox, or another modern browser launches the application.
+
+If a browser restriction affects any optional feature, redesign that feature to work locally rather than making the entire application dependent on a server.
+
+## 27. Final Testing Checklist
+
+Before delivering the file, verify the following.
+
+### Binomial default test
+
+For `n = 20`, `p = 0.35`:
+- Mean = 7
+- Variance = 4.55
+- Standard deviation ≈ 2.1331
+- Second moment = 53.55
+- Skewness ≈ 0.1404
+
+### Binomial exercise test
+
+For `n = 15`, `p = 0.6`:
+- Mean = 9
+- Variance = 3.6
+- `P(X = 9)` ≈ 0.2066
+- `P(X ≤ 10)` ≈ 0.7869
+- Unique mode = 9
+
+### Poisson exercise test
+
+For `λ = 6`:
+- Mean = 6
+- Variance = 6
+- Standard deviation ≈ 2.4495
+- `P(X = 8)` ≈ 0.1033
+- `P(X ≤ 5)` ≈ 0.4457
+
+### Geometric default test
+
+For `p = 0.5`:
+- Mean = 2
+- Variance = 2
+- Standard deviation ≈ 1.4142
+- Second moment = 6
+- Skewness ≈ 2.1213
+
+### Geometric exercise test
+
+For `p = 0.5`:
+- `P(X = 3)` = 0.125
+- `P(X ≤ 3)` = 0.875
+- Highest PMF value occurs at `X = 1`
+
+### Additional tests
+
+- Binomial `p = 0` and `p = 1`
+- Binomial `k = 0` and `k = n`
+- Invalid Binomial inputs
+- Poisson `λ = 0`
+- Poisson `k = 0`
+- Invalid Poisson inputs
+- Geometric `p = 1`
+- Invalid Geometric probabilities
+- Invalid or non-integer `k` inputs
+- Automatic graph updates
+- Mean reference-line positioning
+- All four navigation items
+- All three exercise-loading buttons
+- Responsive layout on different screen sizes
+- Direct opening of `index.html` without a build process
+
+## 28. Final Deliverable Instructions
+
+**Your final output must be the actual downloadable `index.html` file.**
+
+Do not stop after providing source code in a text response. Generate the file, save it with the exact filename `index.html`, and provide a working download link to that file.
+
+The delivered HTML file must contain the entire functional application with all three probability distributions, all calculators, all required graphs, the Poisson comparison charts, and all three exercises.
+
+Do not omit any formulas, validations, input controls, graph features, laboratory questions, or default values.
+
+Prioritize mathematical correctness, functional interactivity, self-contained execution, and a clean educational interface.
